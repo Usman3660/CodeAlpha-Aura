@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURA 3D — Next-Gen Cybernetic & Spatial E-Commerce</title>
+  <meta name="description" content="Experience next-generation 3D spatial tech, luxury cyber gadgets, and futuristic wearables with real-time 3D interactive previews.">
+  
+  <!-- Fonts: Space Grotesk & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Three.js for 3D Graphics -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Canvas Confetti for Celebration on Checkout -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="cyber-dark">
+
+  <!-- Ambient Glowing Background Blobs -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="ambient-glow glow-3"></div>
+
+  <!-- Announcement Bar -->
+  <div class="announcement-bar">
+    <div class="container announcement-content">
+      <span><i class="fa-solid fa-bolt-lightning text-cyan"></i> <strong>CYBER WEEK:</strong> Use code <mark class="coupon-chip" onclick="app.copyCoupon('ALPHA20')">ALPHA20</mark> for 20% OFF or <mark class="coupon-chip" onclick="app.copyCoupon('CYBER50')">CYBER50</mark> for 50% OFF!</span>
+      <div class="quick-links">
+        <span class="db-badge" id="db-status-pill"><span class="pulse-dot"></span> System Online</span>
+        <button class="btn-text" id="btn-admin-panel"><i class="fa-solid fa-shield-halved"></i> Admin Console</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Navigation Header -->
+  <header class="main-header glass-panel">
+    <div class="container header-inner">
+      <!-- Brand Logo -->
+      <a href="#" class="brand-logo" id="brand-home-link">
+        <div class="logo-3d-box">
+          <div class="cube-face front"><i class="fa-solid fa-cube"></i></div>
+        </div>
+        <span class="logo-text">AURA<span class="gradient-text">.3D</span></span>
+      </a>
+
+      <!-- Search Bar -->
+      <div class="search-wrapper">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="global-search-input" placeholder="Search spatial audio, VR visors, cyber gear..." autocomplete="off">
+        <button id="search-clear-btn" class="clear-search-btn hide"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <!-- Header Actions -->
+      <div class="header-actions">
+        <!-- Wishlist -->
+        <button class="icon-action-btn" id="btn-wishlist-toggle" title="Wishlist">
+          <i class="fa-regular fa-heart"></i>
+          <span class="action-badge" id="wishlist-count-badge">0</span>
+        </button>
+
+        <!-- Cart Trigger -->
+        <button class="icon-action-btn cart-btn" id="btn-cart-open" title="Shopping Cart">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span class="action-badge pulse" id="cart-count-badge">0</span>
+        </button>
+
+        <!-- User Profile / Auth -->
+        <div class="user-menu-wrapper" id="user-menu-container">
+          <!-- Rendered dynamically by auth.js -->
+          <button class="btn-primary-sm glow-btn" id="btn-open-auth-modal" onclick="auth.openAuthModal()">
+            <i class="fa-regular fa-user"></i> Sign In
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 3D Hero Section -->
+  <section class="hero-section">
+    <div class="container hero-container">
+      <div class="hero-content">
+        <div class="hero-badge-pill">
+          <i class="fa-solid fa-atom fa-spin text-cyan"></i> SPATIAL COMPUTING & HARDWARE
+        </div>
+        <h1 class="hero-title">
+          Step Into The <br>
+          <span class="gradient-text text-glow">Future of Gear</span>
+        </h1>
+        <p class="hero-subtitle">
+          Experience ultra-precision engineered spatial headsets, holographic timepieces, and neural peripherals with real-time 3D interactive physics.
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="#catalog-section" class="btn-cyber-primary" id="btn-explore-catalog">
+            <span>Explore Catalog</span> <i class="fa-solid fa-arrow-right"></i>
+          </a>
+          <button class="btn-cyber-outline" id="btn-hero-quick-3d">
+            <i class="fa-solid fa-vr-cardboard"></i> 3D Showcase
+          </button>
+        </div>
+
+        <!-- Live Metrics Ticker -->
+        <div class="hero-stats-grid">
+          <div class="stat-item glass-card">
+            <span class="stat-number">40K+</span>
+            <span class="stat-label">Neural Audio Hz</span>
+          </div>
+          <div class="stat-item glass-card">
+            <span class="stat-number">0.1ms</span>
+            <span class="stat-label">Magnetic Actuation</span>
+          </div>
+          <div class="stat-item glass-card">
+            <span class="stat-number">100%</span>
+            <span class="stat-label">Encrypted Orders</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3D Interactive Three.js Canvas Container -->
+      <div class="hero-3d-visualizer">
+        <div class="canvas-glow-ring"></div>
+        <div id="three-hero-container" class="three-viewport"></div>
+        <div class="canvas-overlay-tag glass-panel">
+          <span class="live-dot"></span> Interactive 3D • Drag to Orbit
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product Catalog Section -->
+  <main class="catalog-section" id="catalog-section">
+    <div class="container">
+      <!-- Section Header -->
+      <div class="section-title-wrap">
+        <div>
+          <h2 class="section-heading">Featured <span class="gradient-text">Artifacts & Gear</span></h2>
+          <p class="section-subheading">High-performance cybernetic hardware with holographic aesthetics</p>
+        </div>
+        
+        <!-- View Toggle & Active Count -->
+        <div class="catalog-meta-controls">
+          <span class="results-count" id="results-count-text">Showing 8 products</span>
+          <div class="view-switch-group">
+            <button class="view-btn active" data-view="grid" id="view-grid-btn" title="Grid View"><i class="fa-solid fa-grip"></i></button>
+            <button class="view-btn" data-view="list" id="view-list-btn" title="List View"><i class="fa-solid fa-list"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category Filter Rail -->
+      <div class="category-rail-wrapper">
+        <div class="category-rail" id="category-pills-container">
+          <!-- Dynamic category pills -->
+          <button class="cat-pill active" data-category="All">All Categories <span class="badge">8</span></button>
+        </div>
+      </div>
+
+      <!-- Filter Toolbar & Active Chips -->
+      <div class="filter-toolbar glass-panel">
+        <!-- Price Slider -->
+        <div class="filter-group">
+          <label class="filter-label"><i class="fa-solid fa-sliders"></i> Max Price: <strong id="price-val-label">$1,200</strong></label>
+          <input type="range" id="price-range-slider" min="50" max="1500" step="25" value="1500" class="custom-slider">
+        </div>
+
+        <!-- In Stock Only Checkbox -->
+        <div class="filter-group-inline">
+          <label class="custom-toggle">
+            <input type="checkbox" id="stock-filter-toggle">
+            <span class="toggle-slider"></span>
+            <span class="toggle-text">In Stock Only</span>
+          </label>
+        </div>
+
+        <!-- Sort Select -->
+        <div class="filter-group sort-group">
+          <label class="filter-label"><i class="fa-solid fa-arrow-down-short-wide"></i> Sort By:</label>
+          <select id="sort-select" class="custom-select">
+            <option value="featured">Featured Picks</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+            <option value="rating">Highest Rated</option>
+            <option value="reviews">Most Reviewed</option>
+          </select>
+        </div>
+
+        <!-- Reset Button -->
+        <button class="btn-reset-filters" id="btn-reset-filters" title="Reset All Filters">
+          <i class="fa-solid fa-rotate-left"></i> Reset
+        </button>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="products-grid" id="products-grid-container">
+        <!-- Rendered dynamically by app.js -->
+        <div class="loading-spinner-wrap">
+          <div class="cyber-spinner"></div>
+          <p>Synthesizing products...</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Features Highlight Banner -->
+  <section class="perks-banner">
+    <div class="container perks-grid">
+      <div class="perk-card glass-card">
+        <div class="perk-icon"><i class="fa-solid fa-truck-fast"></i></div>
+        <div>
+          <h4>Sub-Orbital Express Shipping</h4>
+          <p>Free express delivery worldwide on all orders over $150.</p>
+        </div>
+      </div>
+      <div class="perk-card glass-card">
+        <div class="perk-icon"><i class="fa-solid fa-cube"></i></div>
+        <div>
+          <h4>3D Hologram Inspection</h4>
+          <p>Rotate, inspect, and customize colors before you purchase.</p>
+        </div>
+      </div>
+      <div class="perk-card glass-card">
+        <div class="perk-icon"><i class="fa-solid fa-shield-virus"></i></div>
+        <div>
+          <h4>2-Year CyberShield Warranty</h4>
+          <p>Full titanium chassis & firmware defect coverage guarantee.</p>
+        </div>
+      </div>
+      <div class="perk-card glass-card">
+        <div class="perk-icon"><i class="fa-solid fa-rotate"></i></div>
+        <div>
+          <h4>30-Day Effortless Returns</h4>
+          <p>No hassle automated instant return portal & instant refunds.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="main-footer glass-panel">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="#" class="brand-logo">
+          <div class="logo-3d-box">
+            <div class="cube-face front"><i class="fa-solid fa-cube"></i></div>
+          </div>
+          <span class="logo-text">AURA<span class="gradient-text">.3D</span></span>
+        </a>
+        <p>Pioneering the next era of cybernetic hardware and immersive spatial computing gear.</p>
+        <div class="footer-socials">
+          <a href="#" class="social-icon"><i class="fa-brands fa-github"></i></a>
+          <a href="#" class="social-icon"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#" class="social-icon"><i class="fa-brands fa-discord"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-links-group">
+        <h5>Explore</h5>
+        <a href="#catalog-section">Spatial Audio</a>
+        <a href="#catalog-section">Wearables</a>
+        <a href="#catalog-section">Vision Displays</a>
+        <a href="#catalog-section">Cyber Gear</a>
+      </div>
+
+      <div class="footer-links-group">
+        <h5>Client Support</h5>
+        <a href="#" onclick="app.openTrackOrderModal()">Order Tracking</a>
+        <a href="#" onclick="app.openAdminModal()">Store Console</a>
+        <a href="#">Warranty & Shield</a>
+        <a href="#">Terms & Privacy</a>
+      </div>
+
+      <div class="footer-newsletter">
+        <h5>Join the Vanguard</h5>
+        <p>Subscribe to receive early drops and secret discount codes.</p>
+        <div class="newsletter-form">
+          <input type="email" placeholder="Enter your email" id="newsletter-input">
+          <button class="btn-primary-sm" onclick="app.subscribeNewsletter()"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>© 2026 AURA.3D Inc. Built with Express.js, MongoDB & Three.js. All rights reserved.</p>
+      <div class="payment-methods-icons">
+        <i class="fa-brands fa-cc-visa"></i>
+        <i class="fa-brands fa-cc-mastercard"></i>
+        <i class="fa-brands fa-cc-apple-pay"></i>
+        <i class="fa-brands fa-bitcoin"></i>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== MODALS & DRAWERS ==================== -->
+
+  <!-- Slide-out Shopping Cart Drawer -->
+  <div class="drawer-overlay" id="cart-drawer-overlay"></div>
+  <aside class="cart-drawer glass-panel" id="cart-drawer">
+    <div class="drawer-header">
+      <div class="drawer-title-wrap">
+        <i class="fa-solid fa-bag-shopping text-cyan"></i>
+        <h3>Cart & Requisitions</h3>
+        <span class="cart-item-count-chip" id="drawer-item-count">0 items</span>
+      </div>
+      <button class="close-drawer-btn" id="btn-close-cart" title="Close Cart"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <!-- Free Shipping Progress Bar -->
+    <div class="shipping-progress-box">
+      <div class="shipping-progress-text" id="shipping-progress-text">
+        Add <strong>$150.00</strong> more to unlock <strong>Free Express Shipping!</strong>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="shipping-progress-bar" style="width: 0%;"></div>
+      </div>
+    </div>
+
+    <!-- Cart Items Scroll List -->
+    <div class="cart-items-container" id="cart-items-list">
+      <!-- Dynamic cart items list -->
+    </div>
+
+    <!-- Cart Footer & Summary -->
+    <div class="cart-footer">
+      <!-- Coupon Code Input -->
+      <div class="coupon-apply-wrap">
+        <input type="text" id="coupon-input" placeholder="Coupon Code (e.g. ALPHA20, CYBER50)">
+        <button id="btn-apply-coupon" class="btn-apply-coupon">Apply</button>
+      </div>
+      <div id="applied-coupon-pill" class="applied-coupon-tag hide">
+        <span><i class="fa-solid fa-tag"></i> <strong id="applied-coupon-name">ALPHA20</strong></span>
+        <button onclick="cart.removeCoupon()" class="remove-coupon-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <!-- Pricing Breakdown -->
+      <div class="cart-totals-table">
+        <div class="total-row">
+          <span>Subtotal</span>
+          <span id="cart-subtotal-val">$0.00</span>
+        </div>
+        <div class="total-row text-emerald" id="cart-discount-row" style="display: none;">
+          <span>Discount</span>
+          <span id="cart-discount-val">-$0.00</span>
+        </div>
+        <div class="total-row">
+          <span>Est. Shipping</span>
+          <span id="cart-shipping-val">$15.00</span>
+        </div>
+        <div class="total-row">
+          <span>Estimated Tax (8%)</span>
+          <span id="cart-tax-val">$0.00</span>
+        </div>
+        <div class="total-row final-total">
+          <span>Total</span>
+          <span id="cart-grand-total-val" class="gradient-text">$0.00</span>
+        </div>
+      </div>
+
+      <!-- Checkout CTA Button -->
+      <button class="btn-checkout-glow" id="btn-open-checkout">
+        <span>Proceed to Secure Checkout</span>
+        <i class="fa-solid fa-lock"></i>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Product Details Modal with 3D Inspector -->
+  <div class="modal-backdrop" id="product-details-modal">
+    <div class="modal-dialog modal-lg glass-panel">
+      <button class="modal-close-btn" onclick="app.closeProductModal()"><i class="fa-solid fa-xmark"></i></button>
+      
+      <div class="product-modal-body" id="product-modal-content">
+        <!-- Dynamic Product Details Content -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout & Order Processing Modal -->
+  <div class="modal-backdrop" id="checkout-modal">
+    <div class="modal-dialog modal-checkout glass-panel">
+      <button class="modal-close-btn" onclick="app.closeCheckoutModal()"><i class="fa-solid fa-xmark"></i></button>
+
+      <div class="checkout-header">
+        <div class="checkout-steps-bar">
+          <div class="step-node active" id="step-node-1"><span class="step-num">1</span> Shipping</div>
+          <div class="step-line" id="step-line-1"></div>
+          <div class="step-node" id="step-node-2"><span class="step-num">2</span> Payment</div>
+          <div class="step-line" id="step-line-2"></div>
+          <div class="step-node" id="step-node-3"><span class="step-num">3</span> Confirm</div>
+        </div>
+      </div>
+
+      <!-- Step 1: Shipping Address Form -->
+      <div class="checkout-step-content" id="checkout-step-1">
+        <h3 class="checkout-step-title"><i class="fa-solid fa-location-dot text-cyan"></i> Shipping Destination</h3>
+        <form id="shipping-form" class="cyber-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Full Name *</label>
+              <input type="text" id="ship-name" required placeholder="Ali" value="Ali">
+            </div>
+            <div class="form-group">
+              <label>Email Address *</label>
+              <input type="email" id="ship-email" required placeholder="ali@aura.io" value="ali@aura.io">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Street Address *</label>
+            <input type="text" id="ship-street" required placeholder="742 Cyberpunk Blvd, Suite 400" value="742 Cyberpunk Blvd, Apt 4B">
+          </div>
+          <div class="form-row form-row-3">
+            <div class="form-group">
+              <label>City *</label>
+              <input type="text" id="ship-city" required placeholder="Neo Tokyo" value="Neo Tokyo">
+            </div>
+            <div class="form-group">
+              <label>State / Region</label>
+              <input type="text" id="ship-state" placeholder="NT" value="NT">
+            </div>
+            <div class="form-group">
+              <label>Postal Code *</label>
+              <input type="text" id="ship-zip" required placeholder="90210" value="90210">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Country *</label>
+            <select id="ship-country" class="custom-select">
+              <option value="United States">United States</option>
+              <option value="United Kingdom">United Kingdom</option>
+              <option value="Japan">Japan</option>
+              <option value="Germany">Germany</option>
+              <option value="Canada">Canada</option>
+              <option value="Singapore">Singapore</option>
+            </select>
+          </div>
+          <button type="submit" class="btn-cyber-primary btn-full-width">Continue to Payment <i class="fa-solid fa-arrow-right"></i></button>
+        </form>
+      </div>
+
+      <!-- Step 2: Payment Method & 3D Interactive Card Preview -->
+      <div class="checkout-step-content hide" id="checkout-step-2">
+        <h3 class="checkout-step-title"><i class="fa-solid fa-credit-card text-cyan"></i> Payment Method</h3>
+        
+        <!-- Payment Options Toggle -->
+        <div class="payment-tabs">
+          <button class="pay-tab active" data-method="card"><i class="fa-solid fa-credit-card"></i> Credit Card</button>
+          <button class="pay-tab" data-method="crypto"><i class="fa-brands fa-bitcoin"></i> Crypto / Web3</button>
+          <button class="pay-tab" data-method="apple"><i class="fa-brands fa-apple"></i> Apple Pay</button>
+        </div>
+
+        <!-- 3D Flippable Credit Card -->
+        <div class="card-3d-wrapper" id="card-3d-preview">
+          <div class="credit-card-3d" id="credit-card-inner">
+            <div class="card-face card-front">
+              <div class="card-chip"></div>
+              <div class="card-brand"><i class="fa-solid fa-bolt-lightning"></i> AURA PAY</div>
+              <div class="card-number-display" id="card-num-disp">4242 •••• •••• 4242</div>
+              <div class="card-meta">
+                <div>
+                  <span class="card-meta-label">CARD HOLDER</span>
+                  <span class="card-meta-val" id="card-name-disp">ALI</span>
+                </div>
+                <div>
+                  <span class="card-meta-label">EXPIRES</span>
+                  <span class="card-meta-val" id="card-exp-disp">12/28</span>
+                </div>
+              </div>
+            </div>
+            <div class="card-face card-back">
+              <div class="card-mag-strip"></div>
+              <div class="card-cvv-box">
+                <span class="cvv-label">CVV</span>
+                <span class="cvv-val" id="card-cvv-disp">888</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Input Form -->
+        <form id="payment-form" class="cyber-form">
+          <div class="form-group">
+            <label>Card Number</label>
+            <input type="text" id="pay-card-num" maxlength="19" placeholder="4242 4242 4242 4242" value="4242 8888 9999 4242">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Cardholder Name</label>
+              <input type="text" id="pay-card-name" placeholder="Ali" value="Ali">
+            </div>
+            <div class="form-group">
+              <label>Expiry Date</label>
+              <input type="text" id="pay-card-exp" maxlength="5" placeholder="MM/YY" value="12/28">
+            </div>
+            <div class="form-group">
+              <label>CVV / CVC</label>
+              <input type="password" id="pay-card-cvv" maxlength="4" placeholder="888" value="888">
+            </div>
+          </div>
+          
+          <div class="form-actions-split">
+            <button type="button" class="btn-cyber-outline" onclick="app.goToCheckoutStep(1)"><i class="fa-solid fa-arrow-left"></i> Back</button>
+            <button type="submit" class="btn-cyber-primary" id="btn-submit-order">Pay & Place Order <i class="fa-solid fa-shield-check"></i></button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Step 3: Order Processing & Confirmation -->
+      <div class="checkout-step-content hide" id="checkout-step-3">
+        <div class="order-success-screen" id="order-success-box">
+          <!-- Animated success checkmark -->
+          <div class="success-icon-wrap pulse-glow">
+            <i class="fa-solid fa-check"></i>
+          </div>
+          <h2 class="order-success-title">Order Transmitted & Confirmed!</h2>
+          <p class="order-success-sub">A receipt and tracking pass has been generated on the ledger.</p>
+
+          <div class="order-receipt-card glass-card" id="confirmed-receipt-details">
+            <!-- Dynamic Receipt Data -->
+          </div>
+
+          <div class="confirmation-actions">
+            <button class="btn-cyber-primary" onclick="app.openTrackOrderModal(app.lastOrderId)"><i class="fa-solid fa-route"></i> Live Order Tracking</button>
+            <button class="btn-cyber-outline" onclick="window.print()"><i class="fa-solid fa-print"></i> Print Invoice</button>
+            <button class="btn-text" onclick="app.closeCheckoutModal()"><i class="fa-solid fa-store"></i> Continue Shopping</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Authentication Modal (Login / Register) -->
+  <div class="modal-backdrop" id="auth-modal">
+    <div class="modal-dialog modal-sm glass-panel">
+      <button class="modal-close-btn" onclick="auth.closeAuthModal()"><i class="fa-solid fa-xmark"></i></button>
+
+      <div class="auth-tabs">
+        <button class="auth-tab-btn active" id="tab-login" onclick="auth.switchTab('login')">Sign In</button>
+        <button class="auth-tab-btn" id="tab-register" onclick="auth.switchTab('register')">Create Account</button>
+      </div>
+
+      <!-- Login Form -->
+      <div class="auth-tab-pane" id="pane-login">
+        <form id="login-form" class="cyber-form">
+          <div class="form-group">
+            <label><i class="fa-solid fa-envelope"></i> Email Address</label>
+            <input type="email" id="login-email" required placeholder="ali@aura.io" value="ali@aura.io">
+          </div>
+          <div class="form-group">
+            <label><i class="fa-solid fa-key"></i> Password</label>
+            <input type="password" id="login-password" required placeholder="••••••••" value="password123">
+          </div>
+          <button type="submit" class="btn-cyber-primary btn-full-width">Sign In to Dashboard</button>
+          
+          <div class="quick-demo-logins">
+            <span class="demo-label">Quick Demo Access:</span>
+            <div class="demo-btns">
+              <button type="button" class="btn-demo-pill" onclick="auth.fillDemo('ali@aura.io', 'password123')">Ali (Demo)</button>
+              <button type="button" class="btn-demo-pill" onclick="auth.fillDemo('ahmad@aura.io', 'password123')">Ahmad (Admin)</button>
+              <button type="button" class="btn-demo-pill" onclick="auth.fillDemo('ayesha@aura.io', 'password123')">Ayesha</button>
+              <button type="button" class="btn-demo-pill" onclick="auth.fillDemo('omar@aura.io', 'password123')">Omar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Register Form -->
+      <div class="auth-tab-pane hide" id="pane-register">
+        <form id="register-form" class="cyber-form">
+          <div class="form-group">
+            <label><i class="fa-solid fa-user"></i> Full Name</label>
+            <input type="text" id="reg-name" required placeholder="Omar">
+          </div>
+          <div class="form-group">
+            <label><i class="fa-solid fa-envelope"></i> Email Address</label>
+            <input type="email" id="reg-email" required placeholder="omar@aura.io">
+          </div>
+          <div class="form-group">
+            <label><i class="fa-solid fa-key"></i> Password</label>
+            <input type="password" id="reg-password" required minlength="6" placeholder="Min. 6 characters">
+          </div>
+          <button type="submit" class="btn-cyber-primary btn-full-width">Create Account</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Account & Orders Modal -->
+  <div class="modal-backdrop" id="account-modal">
+    <div class="modal-dialog modal-lg glass-panel">
+      <button class="modal-close-btn" onclick="app.closeAccountModal()"><i class="fa-solid fa-xmark"></i></button>
+
+      <div class="account-modal-header">
+        <div class="user-profile-badge">
+          <div class="avatar-ring">
+            <i class="fa-solid fa-user-astronaut"></i>
+          </div>
+          <div>
+            <h3 id="account-user-name">Ali</h3>
+            <span class="user-role-tag" id="account-user-email">ali@aura.io</span>
+          </div>
+        </div>
+        <button class="btn-cyber-outline btn-sm" onclick="auth.logout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out</button>
+      </div>
+
+      <div class="account-modal-body">
+        <h4 class="orders-section-heading"><i class="fa-solid fa-clock-rotate-left text-cyan"></i> Order History & Tracking</h4>
+        <div class="orders-list-table-wrap" id="account-orders-list">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order Tracking Stepper Modal -->
+  <div class="modal-backdrop" id="tracking-modal">
+    <div class="modal-dialog modal-md glass-panel">
+      <button class="modal-close-btn" onclick="app.closeTrackingModal()"><i class="fa-solid fa-xmark"></i></button>
+
+      <div class="tracking-modal-header">
+        <i class="fa-solid fa-satellite-dish text-cyan"></i>
+        <h3>Live Dispatch Tracking</h3>
+      </div>
+
+      <div class="tracking-search-bar">
+        <input type="text" id="tracking-search-input" placeholder="Enter Order ID or Tracking #">
+        <button class="btn-primary-sm" onclick="app.searchTracking()"><i class="fa-solid fa-search"></i> Track</button>
+      </div>
+
+      <div class="tracking-result-box" id="tracking-content">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Console & Product Adder Modal -->
+  <div class="modal-backdrop" id="admin-modal">
+    <div class="modal-dialog modal-lg glass-panel">
+      <button class="modal-close-btn" onclick="app.closeAdminModal()"><i class="fa-solid fa-xmark"></i></button>
+
+      <div class="admin-modal-header">
+        <div class="admin-title-wrap">
+          <i class="fa-solid fa-shield-halved text-cyan"></i>
+          <h3>AURA Store Admin & Inventory Hub</h3>
+        </div>
+        <span class="db-badge" id="admin-db-status"><span class="pulse-dot"></span> MongoDB</span>
+      </div>
+
+      <!-- Admin Quick Stats -->
+      <div class="admin-stats-grid" id="admin-stats-container">
+        <!-- Stats cards -->
+      </div>
+
+      <!-- Add Product Form Accordion -->
+      <div class="admin-action-section">
+        <h4 class="admin-subheading"><i class="fa-solid fa-plus text-cyan"></i> Add New Product to Catalog</h4>
+        <form id="admin-add-product-form" class="cyber-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Product Name *</label>
+              <input type="text" id="adm-pname" required placeholder="e.g. CyberGlove Haptic Controller">
+            </div>
+            <div class="form-group">
+              <label>Category *</label>
+              <select id="adm-pcat" class="custom-select">
+                <option value="Spatial Audio">Spatial Audio</option>
+                <option value="Wearables">Wearables</option>
+                <option value="Vision Displays">Vision Displays</option>
+                <option value="Luxury Cyber Gear">Luxury Cyber Gear</option>
+                <option value="Next-Gen Tech">Next-Gen Tech</option>
+                <option value="Smart Home">Smart Home</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row form-row-3">
+            <div class="form-group">
+              <label>Price ($) *</label>
+              <input type="number" step="0.01" id="adm-pprice" required placeholder="199.99">
+            </div>
+            <div class="form-group">
+              <label>Stock Units</label>
+              <input type="number" id="adm-pstock" value="25">
+            </div>
+            <div class="form-group">
+              <label>3D Mesh Geometry</label>
+              <select id="adm-pmodel" class="custom-select">
+                <option value="torus">Torus Ring (Cyber Audio)</option>
+                <option value="sphere">Holo Sphere (Orb/Visor)</option>
+                <option value="cylinder">Titanium Cylinder (Watch)</option>
+                <option value="box">Prism Box (Keyboard)</option>
+                <option value="octahedron">Diamond Octahedron (Drone)</option>
+                <option value="icosahedron">Levitating Icosahedron</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Image URL</label>
+            <input type="url" id="adm-pimg" placeholder="https://images.unsplash.com/photo-..." value="https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=800&q=80">
+          </div>
+          <div class="form-group">
+            <label>Description *</label>
+            <textarea id="adm-pdesc" required rows="2" placeholder="Cutting-edge specs and high performance details..."></textarea>
+          </div>
+          <button type="submit" class="btn-cyber-primary"><i class="fa-solid fa-cloud-arrow-up"></i> Publish Product</button>
+        </form>
+      </div>
+
+      <!-- Store Orders Management Table -->
+      <div class="admin-orders-section">
+        <h4 class="admin-subheading"><i class="fa-solid fa-boxes-packing text-cyan"></i> Live Store Orders & Status Controller</h4>
+        <div class="admin-orders-table-wrap" id="admin-orders-table">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/three-scene.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
